@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -19,10 +19,19 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk
+
+      - name: Install Python deps
         run: |
           pip install --upgrade pip
           pip install buildozer cython
+
+      - name: Accept Android licenses
+        run: |
+          yes | sudo apt-get install -y sdkmanager || true
 
       - name: Build APK
         run: |
